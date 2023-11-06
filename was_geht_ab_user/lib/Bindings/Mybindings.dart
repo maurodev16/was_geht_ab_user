@@ -8,5 +8,6 @@ class MyBindings implements Bindings {
 void dependencies() {
  Get.lazyPut<HomeController>(() => HomeController(Get.find()));
      Get.lazyPut<IRepositoryHome>(() => RepositoryHome());
+     Get.lazyPut(()=>RepositoryHome());
   }
 }

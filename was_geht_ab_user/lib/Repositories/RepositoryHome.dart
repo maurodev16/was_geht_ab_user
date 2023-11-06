@@ -15,8 +15,33 @@ class RepositoryHome extends GetConnect implements IRepositoryHome {
   }
 
   @override
-  Future<List<EstablishmentModel>> getAll() {
-    throw UnimplementedError();
+  Future<List<EstablishmentModel>> getAll()async {
+    //try {
+      final response = await httpClient.get('establishment/fetch');
+      if (response.status.isOk) {
+        var jsonResponse = await response.body;
+        List<dynamic> postList = jsonResponse;
+        return postList
+            .map<EstablishmentModel>(
+                (item) => EstablishmentModel.fromJson(item))
+            .toList();
+      }
+
+      if (response.status.hasError) {
+        return [];
+      }
+      if (response.status.isNotFound) {
+        return [];
+      }
+      if (response.status.connectionError) {
+        return [];
+      }
+      print("Body FEcth all Posts Response:::::::::::::${response.bodyString}");
+
+      throw Exception(response.bodyString);
+    // } catch (e) {
+    //   throw Exception(e.toString());
+    // }
   }
 
   @override
